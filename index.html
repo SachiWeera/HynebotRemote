@@ -24,10 +24,18 @@
             margin: 5px;
         }
 		
-		.rectangle {
+
+        .rectangle {
             border: 2px solid black;
             padding: 2em;
             display: inline-block;
+        }
+
+        #statusBox {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
         }
     </style>
     <title>Hynebot Remote V1</title>
@@ -35,19 +43,34 @@
 <body>
 
 <br><br>
-    <div class="rectangle">
+<div class="rectangle">
     <div class="container">
-    <h1>Hynebot Remote V1.0</h1>
-    <h2>LUT University © 2023</h2>
+        <h1>Hynebot Remote V1.0</h1>
+        <h2>LUT University © 2023</h2>
+		
+		<br><br>
 
-    <!-- Three blank lines -->
-    <br><br><br>
+        <!-- Connect Button -->
+        <button id="connectButton">Connect</button>
 
-    <!-- Buttons arranged like a diamond -->
-    <button>Forward</button><br>
-    <button>Left</button>
-    <button>Right</button><br>
-    <button>Backward</button>
+        <!-- Three blank lines -->
+        <br><br><br>
+
+        <!-- Buttons arranged like a diamond -->
+        <button>Forward</button><br>
+        <button>Left</button>
+        <button>Right</button><br>
+        <button>Backward</button>
+		
+		<!-- Three blank lines -->
+        <br><br><br>
+
+        <!-- Status Box -->
+        <div id="statusBox">
+            <p id="statusMessage">No errors</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
