@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Lora">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Ubuntu, sans-serif;
+            text-align: center;
+			color: DarkSlateGrey;
+        }
+
+        h1 {
+            font-family: Ubuntu, sans-serif;
+            font-size: 30px;
+			color: DarkSlateGrey;
+        }
+
+        h2 {
+            font-size: 15px;
+        }
+		
+		button {
+			border: 0px solid black;
+			width: 30mm;
+			height: 20mm;
+			margin: 2px;
+			border-radius: 20px;
+			font-size: 18px;
+			transition: transform 0.1s, box-shadow 0.1s; /* Add box-shadow to the transition property */
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle box shadow */
+						background: linear-gradient(to bottom, white, #CCCCCC);
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+			color: DarkSlateGrey;
+		}
+		
+		button#leftButton {
+			margin-right: 25px; /* Increase the right margin */
+		}
+
+		button#rightButton {
+			margin-left: 25px; /* Increase the left margin */
+		}
+
+		button:active {
+			transform: scale(0.95);
+			box-shadow: none; /* Remove the shadow when the button is pressed */
+		}
+
+        .rectangle {
+            border: 2px solid SlateGray;
+            padding: 2em;
+            display: inline-block;
+			background-color: LightGray;
+			border-radius: 20px;
+			background: linear-gradient(to bottom, #EDEDED, #CCCCCC);
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+		#statusBox {
+			max-width: 500px;
+			min-width: 500px;
+			margin-top: 20px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			background-color: #E5E8E8;
+			border-radius: 5px;
+			height: 150px; /* Fixed height */
+			overflow-y: auto; /* Enable vertical scrolling */
+		}
+		
+		#statusMessage {
+			word-wrap: break-word; /* Ensure long words don't overflow */
+		}
+
+        .successMessage {
+            color: green;
+        }
+
+        .errorMessage {
+            color: red;
+        }
+    </style>
+    <title>Wheelchair App Simulator</title>
+	
+    <script>
+
+
+function forward() {
+    fetch('http://192.168.144.251/start')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Corrected to use 'data' instead of 'response'
+            updateStatusMessage("<br>"+ data);
+            document.getElementById('statusMessage').className = 'successMessage';
+        })
+        .catch(error => {
+            document.getElementById('statusMessage').innerHTML = 'Error receiving data!';
+            document.getElementById('statusMessage').className = 'errorMessage';
+        });
+}
+
+
+function left() {
+    fetch('http://192.168.144.251/getdata')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Use the updated function to append data
+            updateStatusMessage("<br>"+ data);
+            document.getElementById('statusMessage').className = 'successMessage';
+        })
+        .catch(error => {
+            // Use the updated function to append error message
+            updateStatusMessage('Error receiving data!');
+            document.getElementById('statusMessage').className = 'errorMessage';
+        });
+}
+
+function right() {
+    fetch('http://192.168.144.251/calibrate')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Corrected to use 'data' instead of 'response'
+            updateStatusMessage("<br>"+ data);
+            document.getElementById('statusMessage').className = 'successMessage';
+        })
+        .catch(error => {
+            document.getElementById('statusMessage').innerHTML = 'Error receiving data!';
+            document.getElementById('statusMessage').className = 'errorMessage';
+        });
+}
+
+function back() {
+    fetch('http://192.168.144.251/stop')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Corrected to use 'data' instead of 'response'
+            updateStatusMessage("<br>"+ data);
+            document.getElementById('statusMessage').className = 'successMessage';
+        })
+        .catch(error => {
+            document.getElementById('statusMessage').innerHTML = 'Error receiving data!';
+            document.getElementById('statusMessage').className = 'errorMessage';
+        });
+}
+
+function updateStatusMessage(data) {
+    // Access the statusMessage element
+    var statusMessageElement = document.getElementById('statusMessage');
+    
+    // Append new data with a line break
+    statusMessageElement.innerHTML += data;
+}
+
+</script>
+	
+	
+</head>
+<body>
+
+<div class="rectangle">
+    <div class="container">
+        <h1>Wheelchair App Simulator</h1>
+        
+        <br><br>
+
+        <!-- Connect Button -->
+        <button id="connectButton" onclick="connect()">&#11093</button>
+
+        <!-- Three blank lines -->
+        <br><br><br>
+
+        <!-- Buttons arranged like a diamond -->
+		<button id="forwardButton"
+        onmousedown="forward()">
+		Start</button><br>
+
+		<button id="leftButton"
+        onmousedown="left()">
+		Get Data</button>
+
+		<button id="rightButton"
+        onmousedown="right()">
+		Calibrate</button><br>
+
+		<button id="backButton"
+        onmousedown="back()">
+		Stop</button>
+
+        <!-- Three blank lines -->
+        <br><br><br>
+
+        <!-- Status Box -->
+        <div id="statusBox">
+            <p id="statusMessage"></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
